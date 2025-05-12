@@ -26,7 +26,8 @@ jobs:
       uses: mymindstorm/setup-emsdk@v11
       with:
           version: ${{env.EM_VERSION}}
-          actions-cache-folder: 'emsdk-cache-test'
+          # currently broken: https://github.com/mymindstorm/setup-emsdk/issues/47
+          #actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
 
     - name: Create build environment
       run: cmake -E make_directory ${{runner.workspace}}/embuild
@@ -111,6 +112,14 @@ jobs:
             ${{runner.workspace}}/embuild/cli/vgmstream-cli.wasm
           name: vgmstream-wasm
 
+    # uploads current assets to vgmstream-releases (token only works on merges)
+    - name: Upload artifacts to vgmstream-releases
+      if: github.event_name != 'pull_request' 
+      working-directory: ${{github.workspace}}
+      env:
+        UPLOADER_GITHUB_TOKEN: ${{ secrets.UPLOADER_GITHUB_TOKEN }}
+      run: |
+        python .github/uploader.py ${{runner.workspace}}/embuild/cli/vgmstream-cli.js ${{runner.workspace}}/embuild/cli/vgmstream-cli.wasm
 
     #- name: Upload artifacts to S3
     #  if: github.event_name != 'pull_request'
