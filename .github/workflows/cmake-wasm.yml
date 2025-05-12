@@ -8,7 +8,7 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   EM_VERSION: 3.1.74
-  EM_CACHE_FOLDER: 'emsdk-cache-v'
+  EM_CACHE_FOLDER: 'emsdk-cache'
 
 jobs:
   build:
@@ -26,7 +26,7 @@ jobs:
       uses: mymindstorm/setup-emsdk@v11
       with:
           version: ${{env.EM_VERSION}}
-          #actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
+          actions-cache-folder: 'emsdk-cache-test'
 
     - name: Create build environment
       run: cmake -E make_directory ${{runner.workspace}}/embuild
