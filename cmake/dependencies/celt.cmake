@@ -127,10 +127,26 @@ if(NOT WIN32 AND USE_CELT)
 				)
 			endif()
 			
+			# libcelt's ancient autoconf can't configure aarch64, patch with a recent one
+			if(CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch64")
+				add_custom_target(CELT_${ver}_PATCH_CONFIG
+					COMMAND ${CMAKE_COMMAND} -E copy_if_different
+						${VGM_SOURCE_DIR}/cmake/autoconf/config.guess
+						${CELT_${ver}_PATH}/config.guess
+					COMMAND ${CMAKE_COMMAND} -E copy_if_different
+						${VGM_SOURCE_DIR}/cmake/autoconf/config.sub
+						${CELT_${ver}_PATH}/config.sub
+					WORKING_DIRECTORY ${CELT_${ver}_PATH}
+				)
+				set(_extra_dep CELT_${ver}_PATCH_CONFIG)
+			else()
+				set(_extra_dep "")
+			endif()
+
 			file(MAKE_DIRECTORY ${CELT_${ver}_BIN})
 			add_custom_target(CELT_${ver}_CONFIGURE
 				COMMAND "${CELT_${ver}_PATH}/configure" ${CELT_${ver}_CONF}
-				DEPENDS ${CELT_${ver}_PATH}/configure
+				DEPENDS ${_extra_dep} ${CELT_${ver}_PATH}/configure
 				BYPRODUCTS ${CELT_${ver}_BIN}/Makefile
 				WORKING_DIRECTORY ${CELT_${ver}_BIN}
 			)
