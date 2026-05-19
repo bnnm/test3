@@ -4,7 +4,7 @@ name: Windows build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     paths-ignore:
       - 'doc/**'
       - '**.md'
@@ -23,7 +23,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag to build (example: v1.2.3)'
+        description: 'Tag to build'
         required: false
 
 concurrency:
@@ -43,11 +43,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-
-      - name: Checkout selected tag
-        if: github.event.inputs.tag != ''
-        shell: cmd
-        run: git checkout ${{ github.event.inputs.tag }}
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
 
       - name: Fetch Git tags
         shell: cmd
