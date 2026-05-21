@@ -2,7 +2,7 @@ name: macOS build
 
 on:
   push:
-    branches: [ master, mains ]
+    branches: [ master, main ]
     tags: [ 'r*' ]
     paths-ignore: ['doc/**', '**.md', 'COPYING', '.gitignore', 'cli/tools/**']
   pull_request:
@@ -68,7 +68,7 @@ jobs:
 
       # uploads current assets to vgmstream-releases (token only works on merges)
       - name: Upload artifacts to vgmstream-releases
-        if: github.event_name != 'pull_request' && ${{ env.UPLOADER_GITHUB_TOKEN != '' }}
+        if: github.event_name != 'pull_request'
         working-directory: ${{github.workspace}}
         shell: bash
         env:

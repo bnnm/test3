@@ -64,11 +64,11 @@ jobs:
 
       # uploads current assets to vgmstream-releases (token only works on merges)
       - name: Upload artifacts to vgmstream-releases
-        env:
-          UPLOADER_GITHUB_TOKEN: ${{ secrets.UPLOADER_GITHUB_TOKEN }}
-        if: github.event_name != 'pull_request' && ${{env.UPLOADER_GITHUB_TOKEN}} != ''
+        if: github.event_name != 'pull_request'
         shell: cmd
         working-directory: ${{github.workspace}}
+        env:
+          UPLOADER_GITHUB_TOKEN: ${{ secrets.UPLOADER_GITHUB_TOKEN }}
         run: |
           python .github\uploader.py bin\vgmstream-win.zip bin\vgmstream-win64.zip bin\foo_input_vgmstream.fb2k-component
           python .github\uploader.py --changelog
