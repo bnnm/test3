@@ -4,7 +4,7 @@ name: macOS build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
     tags: [ 'r*' ]
     paths-ignore: ['doc/**', '**.md', 'COPYING', '.gitignore', 'cli/tools/**']
   pull_request:
@@ -61,7 +61,7 @@ jobs:
           cmake -S . -B build -DBUILD_AUDACIOUS:BOOL=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE
           cmake --build build
 
-      - name: Upload CLI tools artifact
+      - name: Upload CLI tools
         uses: actions/upload-artifact@v7
         with:
           path: ${{ github.workspace }}/build/cli/vgmstream-cli

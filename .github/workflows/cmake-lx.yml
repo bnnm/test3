@@ -4,7 +4,7 @@ name: Linux build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
     tags: [ 'r*' ]
     paths-ignore: ['doc/**', '**.md', 'COPYING', '.gitignore', 'cli/tools/**']
   pull_request:
@@ -118,7 +118,7 @@ jobs:
       shell: bash
       run: cmake --build . --config $BUILD_TYPE
 
-    - name: Upload CLI tools artifact
+    - name: Upload CLI tools
       uses: actions/upload-artifact@v7
       with:
           path: |
@@ -126,8 +126,8 @@ jobs:
           # ${{runner.workspace}}/build/cli/vgmstream123
           name: vgmstream-linux
 
-    #- name: Upload Audacious plugin artifact
-    #  uses: actions/upload-artifact@v4
+    #- name: Upload Audacious plugin
+    #  uses: actions/upload-artifact@v7
     #  with:
     #      path: ${{runner.workspace}}/build/audacious/vgmstream.so
     #      name: vgmstream-audacious
