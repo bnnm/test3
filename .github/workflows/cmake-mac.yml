@@ -4,7 +4,7 @@ name: macOS build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     tags: [ 'r*' ]
     paths-ignore: ['doc/**', '**.md', 'COPYING', '.gitignore', 'cli/tools/**']
   pull_request:
