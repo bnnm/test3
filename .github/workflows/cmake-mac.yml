@@ -1,10 +1,8 @@
-# github workflow to automate builds
-
 name: macOS build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master, mains ]
     tags: [ 'r*' ]
     paths-ignore: ['doc/**', '**.md', 'COPYING', '.gitignore', 'cli/tools/**']
   pull_request:
@@ -31,7 +29,8 @@ jobs:
           fetch-tags: true
 
       - name: Install dependencies
-        run: brew install autoconf automake cmake pkgconfig ffmpeg libao libvorbis mpg123 libtool
+        run: brew install autoconf automake ffmpeg libao libvorbis mpg123 libtool
+        #cmake pkgconfig
 
       - name: Cache celt
         uses: actions/cache@v5
@@ -69,7 +68,7 @@ jobs:
 
       # uploads current assets to vgmstream-releases (token only works on merges)
       - name: Upload artifacts to vgmstream-releases
-        if: github.event_name != 'pull_request' 
+        if: github.event_name != 'pull_request' && secrets.UPLOADER_GITHUB_TOKEN != ''
         working-directory: ${{github.workspace}}
         shell: bash
         env:

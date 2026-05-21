@@ -1,10 +1,8 @@
-# github workflow to automate builds
-
 name: Windows build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master, main ]
     tags: [ 'r*' ]
     paths-ignore: ['doc/**', '**.md', 'COPYING', '.gitignore', 'cli/tools/**']
   pull_request:
@@ -66,7 +64,7 @@ jobs:
 
       # uploads current assets to vgmstream-releases (token only works on merges)
       - name: Upload artifacts to vgmstream-releases
-        if: github.event_name != 'pull_request' 
+        if: github.event_name != 'pull_request' && secrets.UPLOADER_GITHUB_TOKEN != ''
         shell: cmd
         working-directory: ${{github.workspace}}
         env:
